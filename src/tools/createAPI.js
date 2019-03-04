@@ -86,7 +86,7 @@ function calculateDependencies(settings) {
 
 function copyTemplate(appPath, originalDirectory, settings) {
     return new Promise((resolve, reject) => {
-        console.log(originalDirectory);
+        console.log(__dirname);
         const templatePath = originalDirectory + 'src/templates/' + ( settings.TypeScript ? 'typescript' : 'javascript');
         console.log(templatePath);
         if (fs.existsSync(templatePath)) {
