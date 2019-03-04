@@ -1,6 +1,6 @@
 {
   "name": "create-clevyr",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Create a Clevyr-compliant backend",
   "author": "Jacob McSwain <jacob.a.mcswain@gmail.com> (https://mcswain.dev/)",
   "license": "GPL-2.0-only",
