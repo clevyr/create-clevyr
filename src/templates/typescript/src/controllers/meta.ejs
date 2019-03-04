@@ -1,0 +1,18 @@
+<% if (Backend === 'Express') { -%>
+import {Request, Response} from 'express';
+<% } else if (Backend === 'Hapi') { -%>
+import { Request, ResponseToolkit } from "hapi";
+<% } -%>
+
+<% if (Backend === 'Express') { -%>
+const getRoot = (req: Request, res: Response): void => {
+    res.send('Hello World!');
+<% } else if (Backend === 'Hapi') { -%>
+const getRoot = (req: Request, res: ResponseToolkit) => {
+    return 'Hello World!';
+<% } else { -%>
+const getRoot = (req: any, res: any): void => {
+<% } -%>
+};
+
+export {getRoot};

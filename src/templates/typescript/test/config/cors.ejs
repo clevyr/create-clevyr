@@ -1,0 +1,31 @@
+<% if (Backend !== 'Hapi') { -%>
+import * as chai from 'chai';
+
+import { describe, it } from 'mocha';
+import { corsConfig } from '../../src/config/cors';
+import { config } from '../../src/config';
+
+describe('Cors', () => {
+    it('should reject unwhitelisted origins', () => {
+        return new Promise((resolve, reject) => {
+            corsConfig.origin('badactor.com', (err, res) => {
+                if(err) {
+                    resolve();
+                }
+                reject('Cors was allowed');
+            });
+        });
+    });
+    it('should allow a known origin', () => {
+        return new Promise((resolve, reject) => {
+            corsConfig.origin(config.http.host, (err, res) => {
+                if(err) {
+                    reject('Cors was denied');
+                    reject(err);
+                }
+                resolve();
+            });
+        });
+    });
+});
+<% } -%>

@@ -1,0 +1,56 @@
+<% if (Backend === 'Express') { -%>
+import * as express from 'express';
+<% } -%>
+<% if (Compression) { -%>
+import * as compression from 'compression';
+<% } -%>
+<% if (CookieParser) { -%>
+import * as cookieParser from 'cookie-parser';
+<% } -%>
+<% if (Backend !== 'Hapi') { -%>
+import * as cors from 'cors';
+<% } -%>
+<% if (CSRF) { -%>
+import * as csrf from 'csurf';
+<% } -%>
+<% if (Logger === 'Morgan') { -%>
+import * as morgan from 'morgan';
+<% } -%>
+<% if (Backend === 'Express' && ORM === 'Sequelize') { -%>
+import {sequelizeMiddleware} from './orm';
+import { db } from '../db/models';
+<% } -%>
+import {corsConfig} from '../config/cors';
+
+<% if (Backend === 'Express') { -%>
+const linkMiddleware = (app: express.Application) => {
+<% } else { -%>
+const linkMiddleware = (app: any) => {
+<% } -%>
+<% if (Compression) { -%>
+    app.use(compression());
+<% } -%>
+<% if (CookieParser) { -%>
+    app.use(cookieParser());
+<% } -%>
+<% if (CSRF) { -%>
+    app.use(csrf({ cookie: ({ httpOnly: true } as csrf.CookieOptions) }));
+<% } -%>
+<% if (Logger === 'Morgan') { -%>
+    app.use(morgan('combined'));
+<% } -%>
+<% if (Backend !== 'Hapi') { -%>
+    app.use(cors(corsConfig));
+<% } -%>
+<% if (typeof BodyParser != "undefined" && BodyParserJSON && Backend === 'Express') { -%>
+    app.use(express.json());
+<% } -%>
+<% if (typeof BodyParser != "undefined" && BodyParserUrlEncoded && Backend === 'Express') { -%>
+    app.use(express.urlencoded({ extended: true }));
+<% } -%>
+<% if (Backend === 'Express' && ORM === 'Sequelize') { -%>
+    app.use(sequelizeMiddleware(db));
+<% } -%>
+};
+    
+export {linkMiddleware};

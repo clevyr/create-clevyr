@@ -1,0 +1,23 @@
+<% if (Backend === 'Express') { -%>
+import * as express from 'express';
+<% } -%>
+
+import * as fs from 'fs';
+import * as path from 'path';
+
+<% if (Backend === 'Express') { -%>
+const linkRoutes = (app: express.Application) => {
+<% } else { -%>
+const linkRoutes = (app: any) => {
+<% } -%>
+    fs.readdirSync(__dirname)
+        .filter((file) => {
+            return (file.indexOf('.') !== 0) && (file !== 'index.ts' && file !== 'index.js');
+        })
+        .forEach((file) => {
+            const fileRoutes = require(path.join(__dirname, file));
+            fileRoutes.apply(app);
+        });
+};
+
+export {linkRoutes};

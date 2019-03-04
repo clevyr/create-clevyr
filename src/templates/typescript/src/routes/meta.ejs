@@ -1,0 +1,19 @@
+<% if (Backend === 'Express') { -%>
+import * as express from 'express';
+<% } else if (Backend === 'Hapi') { -%>
+import { Server } from 'hapi';
+<% } -%>
+
+import {getRoot} from '../controllers/meta';
+
+<% if (Backend === 'Express') { -%>
+export function apply(app: express.Application): void {
+    app.get('/', getRoot);
+<% } else if (Backend === 'Hapi') { -%>
+export function apply(app: Server): void {
+    app.route({ method:'GET', path: '/', handler: getRoot });
+<% } else { -%>
+export function apply(app: any): void {
+    app.get('/', getRoot);
+<% } -%>
+}

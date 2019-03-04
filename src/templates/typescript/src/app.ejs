@@ -1,0 +1,37 @@
+<% if (Backend === 'Express') { -%>
+import * as express from 'express';
+<% } else if (Backend === 'Koa') { -%>
+import * as koa from 'koa';
+import * as Router from 'koa-router';
+<% } else if (Backend === 'Hapi') { -%>
+import * as hapi from 'hapi';
+import {config} from './config';
+<% } -%>
+
+import {linkMiddleware} from './middleware';
+import {linkRoutes} from './routes';
+
+<% if (Backend === 'Express') { -%>
+const app: express.Application = express();
+<% } else if (Backend === 'Koa') { -%>
+const app = new koa();
+const router = new koa.Router();
+<% } else if (Backend === 'Hapi') { -%>
+const app = new hapi.Server({
+    host: config.http.listenHost,
+    port: config.http.port,
+    routes: {
+        cors: corsConfig,
+    },
+});
+<% } -%>
+
+linkMiddleware(app);
+
+<% if (Backend === 'Koa') { -%>
+linkRoutes(router);
+<% } else { -%>
+linkRoutes(app);
+<% } -%>
+
+export {app};
