@@ -13,6 +13,9 @@
     "type": "git",
     "url": "https://github.com/clevyr/create-clevyr.git"
   },
+  "engines": {
+    "node": ">=6"
+  },
   "scripts": {
     "lint": "./node_modules/.bin/eslint '**/*.js'",
     "lint:fix": "./node_modules/.bin/eslint '**/*.js' --fix",
