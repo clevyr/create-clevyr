@@ -1,12 +1,10 @@
-import * as fs from 'fs-extra';
-import { CmdLine } from '../interfaces/cmdline';
-import { SettingsObject } from '../interfaces/setup';
-import * as path from 'path';
-import * as os from 'os';
-import * as spawn from 'cross-spawn';
-import *  as ejs from 'ejs';
+import fs from 'fs-extra';
+import path from 'path';
+import os from 'os';
+import spawn from 'cross-spawn';
+import ejs from 'ejs';
 
-const createAPI = (args: CmdLine, settings: SettingsObject): void => {
+const createAPI = (args, settings) => {
     fs.mkdirSync(args.projectName);
     const packageJson = {
         name: args.projectName,
@@ -25,24 +23,24 @@ const createAPI = (args: CmdLine, settings: SettingsObject): void => {
     process.chdir(root);
 
     console.log('Installing packages. This might take a couple of minutes.');
-    writePackageJson(root, settings.TypeScript as boolean).then(() => {
+    writePackageJson(root, settings.TypeScript).then(() => {
         installPackages(dependencies).then(() => {
             console.log('Done installing packages.');
-        }).catch((err: Error) => {
+        }).catch((err) => {
             console.error(err);
         });
-        
+
         copyTemplate(root, originalDirectory, settings).then(() => {
             console.log(`API backend created in ${root}`);
-        }).catch((err: Error) => {
+        }).catch((err) => {
             console.error(err);
         });
-    }).catch((err: Error) => {
+    }).catch((err) => {
         console.error(err);
     });
 };
 
-function calculateDependencies(settings: SettingsObject): string[] {
+function calculateDependencies(settings) {
     const dependencies = ['mocha', 'chai'];
     if ('Backend' in settings) {
         dependencies.push(settings.Backend.toString().toLowerCase());
@@ -73,7 +71,7 @@ function calculateDependencies(settings: SettingsObject): string[] {
         dependencies.push('cors');
     }
     if ('TypeScript' in settings && settings.TypeScript) {
-        dependencies.forEach(dep => {
+        dependencies.forEach((dep) => {
             dependencies.push(`@types/${dep}`);
         });
         dependencies.push('@types/node');
@@ -81,31 +79,32 @@ function calculateDependencies(settings: SettingsObject): string[] {
         dependencies.push('ts-node');
         dependencies.push('source-map-support');
     }
-    
+
     dependencies.push('nyc');
     return dependencies;
 }
 
-function copyTemplate(appPath: string, originalDirectory: string, settings: SettingsObject): Promise<void> {
+function copyTemplate(appPath, originalDirectory, settings) {
     return new Promise((resolve, reject) => {
-        const templatePath = path.resolve(originalDirectory, 'src/templates', settings.TypeScript as boolean ? 'typescript' : 'javascript');
+        const templatePath = path.resolve(originalDirectory, 'src/templates',
+            settings.TypeScript ? 'typescript' : 'javascript');
         if (fs.existsSync(templatePath)) {
             fs.copy(templatePath, appPath).then(() => {
                 renderEJS(appPath, settings).then(() => {
                     resolve();
-                }).catch((err: Error) => {
+                }).catch((err) => {
                     reject(err);
                 });
                 return;
             });
         } else {
-            reject(`Could not locate supplied template: ${templatePath}`);
+            reject(new Error(`Could not locate supplied template: ${templatePath}`));
             return;
         }
     });
 }
 
-function renderEJS(appPath: string, settings: SettingsObject): Promise<void> {
+function renderEJS(appPath, settings) {
     return new Promise((resolve, reject) => {
         const ejsFiles = listAllEjsFiles(appPath);
         ejsFiles.forEach((file) => {
@@ -114,7 +113,7 @@ function renderEJS(appPath: string, settings: SettingsObject): Promise<void> {
                     reject(err);
                 } else {
                     fs.writeFileSync(
-                        file.replace('.ejs', (settings.TypeScript as boolean ? '.ts':'.js')),
+                        file.replace('.ejs', (settings.TypeScript ? '.ts' : '.js')),
                         str
                     );
                     fs.remove(file);
@@ -125,10 +124,10 @@ function renderEJS(appPath: string, settings: SettingsObject): Promise<void> {
     });
 }
 
-function listAllEjsFiles(appPath: string): string[] {
-    const ejsFiles: string[] = [];
+function listAllEjsFiles(appPath) {
+    const ejsFiles = [];
     fs.readdirSync(appPath, { withFileTypes: true })
-        .filter((file: fs.Dirent) => {
+        .filter((file) => {
             return (file.name.indexOf('.') !== 0 && !file.name.includes('node_modules'));
         })
         .forEach((file) => {
@@ -142,35 +141,25 @@ function listAllEjsFiles(appPath: string): string[] {
     return ejsFiles;
 }
 
-function writePackageJson(appPath: string, useTypeScript: boolean): Promise<void> {
+function writePackageJson(appPath, useTypeScript) {
     return new Promise((resolve, reject) => {
         try {
-            const appPackageJsonPath: string = path.join(appPath, 'package.json');
-            const appPackageJson: {
-                scripts: {},
-                nyc?: {
-                    include?: string[],
-                    extension?: string[]
-                    require?: string[]
-                    reporter?: string[]
-                    sourceMap?: boolean,
-                    instrument?: boolean,
-                }
-            } = JSON.parse(fs.readFileSync(appPackageJsonPath).toString());
+            const appPackageJsonPath = path.join(appPath, 'package.json');
+            const appPackageJson = JSON.parse(fs.readFileSync(appPackageJsonPath).toString());
 
             if (useTypeScript) {
                 appPackageJson.scripts = {
-                    build: "npm run clean ; tsc -p .",
-                    clean: "node scripts/clean-dist.js",
-                    lint: "tslint --project .",
-                    'lint:fix': "tslint --project . --fix",
-                    start: "ts-node src/index.ts",
+                    'build': 'npm run clean ; tsc -p .',
+                    'clean': 'node scripts/clean-dist.js',
+                    'lint': 'tslint --project .',
+                    'lint:fix': 'tslint --project . --fix',
+                    'start': 'ts-node src/index.ts',
                 };
             } else {
                 appPackageJson.scripts = {
-                    start: "node src/index.js",
-                    lint: "eslint",
-                    'lint:fix': "eslint --fix",
+                    'start': 'node src/index.js',
+                    'lint': 'eslint',
+                    'lint:fix': 'eslint --fix',
                 };
             }
 
@@ -217,7 +206,7 @@ function writePackageJson(appPath: string, useTypeScript: boolean): Promise<void
     });
 }
 
-function installPackages(packages: string[]): Promise<void> {
+function installPackages(packages) {
     return new Promise((resolve, reject) => {
         const npmExec = 'npm';
         const npmArgs = [
@@ -228,11 +217,9 @@ function installPackages(packages: string[]): Promise<void> {
             'error',
         ].concat(packages);
         const child = spawn(npmExec, npmArgs, { stdio: 'inherit' });
-        child.on('close', (code: number) => {
+        child.on('close', (code) => {
             if (code !== 0) {
-                reject({
-                    command: `${npmExec} ${npmArgs.join(' ')}`,
-                });
+                reject(new Error(`${npmExec} ${npmArgs.join(' ')}`));
                 return;
             }
             resolve();
@@ -240,4 +227,4 @@ function installPackages(packages: string[]): Promise<void> {
     });
 }
 
-export { createAPI };
+export default createAPI;

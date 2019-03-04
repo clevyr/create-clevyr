@@ -22,4 +22,4 @@ yarn-error.log*
 
 /.scannerwork
 /.vscode
-/dist
+/testpackage
