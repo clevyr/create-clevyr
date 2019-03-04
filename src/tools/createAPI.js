@@ -11,7 +11,7 @@ const createAPI = (args, settings) => {
         version: '0.1.0',
         private: true,
     };
-    const originalDirectory = path.resolve('../tools');
+    const originalDirectory = '../../';
     const root = path.resolve(args.projectName);
     fs.writeFileSync(
         path.join(root, 'package.json'),
