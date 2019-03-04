@@ -2,4 +2,4 @@
 
 ## Usage
 
-`npm init clevyrc`
+`npm init clevyr`
