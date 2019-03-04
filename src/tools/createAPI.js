@@ -11,7 +11,7 @@ const createAPI = (args, settings) => {
         version: '0.1.0',
         private: true,
     };
-    const originalDirectory = '../../';
+    const originalDirectory = __dirname + '../../';
     const root = path.resolve(args.projectName);
     fs.writeFileSync(
         path.join(root, 'package.json'),
@@ -86,8 +86,9 @@ function calculateDependencies(settings) {
 
 function copyTemplate(appPath, originalDirectory, settings) {
     return new Promise((resolve, reject) => {
-        console.log(__dirname);
-        const templatePath = originalDirectory + 'src/templates/' + ( settings.TypeScript ? 'typescript' : 'javascript');
+        console.log(originalDirectory);
+        const templatePath = path.resolve(originalDirectory, 'src/templates',
+            settings.TypeScript ? 'typescript' : 'javascript');
         console.log(templatePath);
         if (fs.existsSync(templatePath)) {
             fs.copy(templatePath, appPath).then(() => {
