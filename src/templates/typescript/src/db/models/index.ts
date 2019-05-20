@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as Sequelize from 'sequelize';
-import { sequelizeConfig } from '../../config/sequelize';
+import { Sequelize } from 'sequelize';
 const sequelize = new Sequelize(sequelizeConfig);
 
 const db = { sequelize: {}, Sequelize: {}};

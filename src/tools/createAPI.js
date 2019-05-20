@@ -66,6 +66,9 @@ function calculateDependencies(settings) {
     if ('ORM' in settings && settings.ORM !== 'None') {
         dependencies.push(settings.ORM.toString().toLowerCase());
     }
+    if ('ORM' in settings && settings.ORM === 'Sequelize') {
+        dependencies.push('pg');
+    }
     if ('Backend' in settings && settings.Backend !== 'Hapi') {
         dependencies.push('chai-http');
         dependencies.push('cors');
