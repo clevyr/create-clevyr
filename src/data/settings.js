@@ -1,7 +1,7 @@
 const allSettings = [
     {
         name: 'Backend',
-        default: 'Hapi',
+        default: 'Express',
         message: 'The HTTP Backend',
         type: 'list',
         choices: ['Express', 'Koa', 'Connect', 'Hapi'],
