@@ -1,0 +1,20 @@
+const fs = require('fs');
+const path = require('path');
+
+<% if (Backend === 'Koa') { -%>
+module.exports = (app, router) => {
+<% } else { -%>
+module.exports = (app) => {
+<% } -%>
+    fs.readdirSync(__dirname)
+        .filter((file) => {
+            return (file.indexOf('.') !== 0) && (file !== 'index.js');
+        })
+        .forEach((file) => {
+            require(path.join(__dirname, file, 'index.js'))(router, file);
+        });
+<% if (Backend === 'Koa') { -%>
+    app.use(router.routes());
+    app.use(router.allowedMethods());
+<% } -%>
+};

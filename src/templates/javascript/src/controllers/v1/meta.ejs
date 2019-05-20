@@ -4,6 +4,9 @@ module.exports.GETRoot = (req, res) => {
 <% } else if (Backend === 'Hapi') { -%>
 module.exports.GETRoot = (req, res) => {
     return 'Hello World!';
+<% } else if (Backend === 'Koa') { -%>
+module.exports.GETRoot = (ctx, next) => {
+    ctx.body = 'Hello World!';
 <% } else { -%>
 module.exports.GETRoot = (req, res) => {
 <% } -%>

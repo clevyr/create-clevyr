@@ -1,7 +1,8 @@
 <% if (Backend === 'Express') { -%>
 const express = require('express');
 <% } else if (Backend === 'Koa') { -%>
-const koa = require('koa');
+const Koa = require('koa');
+const Router = require('koa-router');
 <% } else if (Backend === 'Hapi') { -%>
 const hapi = require('hapi');
 const config = require('./config');
@@ -10,8 +11,8 @@ const config = require('./config');
 <% if (Backend === 'Express') { -%>
 const app = express();
 <% } else if (Backend === 'Koa') { -%>
-const app = new koa();
-const router = new koa.Router();
+const app = new Koa();
+const router = new Router();
 <% } else if (Backend === 'Hapi') { -%>
 const app = new hapi.Server({
     host: config.http.listenHost,
@@ -25,7 +26,7 @@ const app = new hapi.Server({
 require('./middleware')(app);
 
 <% if (Backend === 'Koa') { -%>
-require('./routes')(router);
+require('./routes')(app, router);
 <% } else { -%>
 require('./routes')(app);
 <% } -%>

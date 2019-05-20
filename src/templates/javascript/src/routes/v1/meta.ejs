@@ -1,11 +1,17 @@
 const controllers = require('../../controllers/v1/meta');
 
+<% if (Backend == 'Koa') { -%>
+module.exports = (router, version) => {
+<% } else { -%>
 module.exports = (app, version) => {
+<% } -%>
 <% if (Backend === 'Express') { -%>
     app.get(`/api/${version}/`, controllers.GETRoot);
 <% } else if (Backend === 'Hapi') { -%>
     app.route({ method:'GET', path: `/api/${version}/`, handler: controllers.GETRoot });
+<% } else if (Backend === 'Koa') { -%>
+    router.get(`/api/${version}/`, controllers.GETRoot);
 <% } else { -%>
     app.get(`/api/${version}/`, controllers.GETRoot);
 <% } -%>
-}
+};
