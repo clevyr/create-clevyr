@@ -8,7 +8,7 @@ module.exports = (app, version) => {
 <% if (Backend === 'Express') { -%>
     app.get(`/api/${version}/`, controllers.GETRoot);
 <% } else if (Backend === 'Hapi') { -%>
-    app.route({ method:'GET', path: `/api/${version}/`, handler: controllers.GETRoot });
+    app.route({ method: 'GET', path: `/api/${version}/`, handler: controllers.GETRoot });
 <% } else if (Backend === 'Koa') { -%>
     router.get(`/api/${version}/`, controllers.GETRoot);
 <% } else { -%>
