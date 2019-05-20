@@ -77,6 +77,7 @@ function calculateDependencies(settings) {
         dependencies.push('@types/node');
         dependencies.push('tslint');
         dependencies.push('ts-node');
+        dependencies.push('typescript');
         dependencies.push('source-map-support');
     }
 

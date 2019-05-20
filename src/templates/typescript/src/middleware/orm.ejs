@@ -1,9 +1,9 @@
 <% if (Backend === 'Express' && ORM === 'Sequelize') { -%>
-import {Request, Response, NextFunction} from 'express';
+import {Request, Response, NextFunction, RequestHandler} from 'express';
 
-function sequelizeMiddleware(db: any): Function {
+function sequelizeMiddleware(db: any): RequestHandler {
     return (req: Request, res: Response, next: NextFunction) => {
-        req.db = db;
+        req['db'] = db;
         next();
     };
 }
