@@ -1,0 +1,33 @@
+<% if (Backend === 'Express') { -%>
+const express = require('express');
+<% } else if (Backend === 'Koa') { -%>
+const koa = require('koa');
+<% } else if (Backend === 'Hapi') { -%>
+const hapi = require('hapi');
+const config = require('./config');
+<% } -%>
+
+<% if (Backend === 'Express') { -%>
+const app = express();
+<% } else if (Backend === 'Koa') { -%>
+const app = new koa();
+const router = new koa.Router();
+<% } else if (Backend === 'Hapi') { -%>
+const app = new hapi.Server({
+    host: config.http.listenHost,
+    port: config.http.port,
+    routes: {
+        cors: corsConfig,
+    },
+});
+<% } -%>
+
+require('./middleware')(app);
+
+<% if (Backend === 'Koa') { -%>
+require('./routes')(router);
+<% } else { -%>
+require('./routes')(app);
+<% } -%>
+
+module.exports = app;

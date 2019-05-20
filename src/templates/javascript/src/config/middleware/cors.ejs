@@ -1,0 +1,23 @@
+const config = require('..');
+
+const corsWhitelist = [
+    config.http.host,
+];
+
+<% if (Backend === 'Hapi') { -%>
+module.exports = {
+    origin: corsWhitelist,
+    credentials: true,
+};
+<% } else { -%>
+module.exports = {
+    origin: function(origin, callback) {
+        if (!origin || corsWhitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+};
+<% } -%>

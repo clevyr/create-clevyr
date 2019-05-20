@@ -1,0 +1,12 @@
+const app = require('./app');
+const config = require('./config');
+
+const { name } = require('../package.json');
+
+<% if (Backend === 'Express') { -%>
+app.listen(config.http.port, () => console.log(`${name} listening on port ${config.http.port}!`));
+<% } else if (Backend === 'Hapi') { -%>
+app.start().then(() => console.log(`${name} listening on port ${config.http.port}!`));
+<% } else { -%>
+app.listen(config.http.port, () => console.log(`${name} listening on port ${config.http.port}!`));
+<% } -%>

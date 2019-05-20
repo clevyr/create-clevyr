@@ -1,0 +1,10 @@
+<% if (Backend === 'Express') { -%>
+module.exports.GETRoot = (req, res) => {
+    res.send('Hello World!');
+<% } else if (Backend === 'Hapi') { -%>
+module.exports.GETRoot = (req, res) => {
+    return 'Hello World!';
+<% } else { -%>
+module.exports.GETRoot = (req, res) => {
+<% } -%>
+};

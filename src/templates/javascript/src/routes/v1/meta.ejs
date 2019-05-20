@@ -1,0 +1,11 @@
+const controllers = require('../../controllers/v1/meta');
+
+module.exports = (app, version) => {
+<% if (Backend === 'Express') { -%>
+    app.get(`/api/${version}/`, controllers.GETRoot);
+<% } else if (Backend === 'Hapi') { -%>
+    app.route({ method:'GET', path: `/api/${version}/`, handler: controllers.GETRoot });
+<% } else { -%>
+    app.get(`/api/${version}/`, controllers.GETRoot);
+<% } -%>
+}
