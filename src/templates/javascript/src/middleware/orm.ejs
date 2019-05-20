@@ -1,16 +1,23 @@
 const db = require('../db/models');
 
-<% if (Backend === 'Express') { -%>
 module.exports = (app) => {
+<% if (Backend === 'Express') { -%>
     app.use((req, res, next) => {
         req.db = db;
 <% } else if (Backend === 'Koa') { -%>
-module.exports = (app) => {
     app.use((ctx, next) => {
         ctx.db = db;
+<% } else if (Backend == 'Hapi') { -%>
+    app.ext({
+        type: 'onRequest',
+        method: (request, h) => {
+            request.db = db;
+            return h.continue;
+        },
+    });
 <% } -%>
 <% if (Backend === 'Express' || Backend === 'Koa' ) { -%>
         return next();
     });
-};
 <% } -%>
+};

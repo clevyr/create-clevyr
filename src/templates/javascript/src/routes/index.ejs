@@ -11,7 +11,11 @@ module.exports = (app) => {
             return (file.indexOf('.') !== 0) && (file !== 'index.js');
         })
         .forEach((file) => {
+<% if (Backend === 'Koa') { -%>
             require(path.join(__dirname, file, 'index.js'))(router, file);
+<% } else { -%>
+            require(path.join(__dirname, file, 'index.js'))(app, file);
+<% } -%>
         });
 <% if (Backend === 'Koa') { -%>
     app.use(router.routes());

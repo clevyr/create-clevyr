@@ -4,7 +4,7 @@ const allSettings = [
         default: 'Express',
         message: 'The HTTP Backend',
         type: 'list',
-        choices: ['Express', 'Koa', 'Connect', 'Hapi'],
+        choices: ['Express', 'Koa', 'Hapi'],
     },
     {
         name: 'ORM',

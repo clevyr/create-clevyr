@@ -2,7 +2,7 @@
 module.exports.GETRoot = (req, res) => {
     res.send('Hello World!');
 <% } else if (Backend === 'Hapi') { -%>
-module.exports.GETRoot = (req, res) => {
+module.exports.GETRoot = (request, h) => {
     return 'Hello World!';
 <% } else if (Backend === 'Koa') { -%>
 module.exports.GETRoot = (ctx, next) => {

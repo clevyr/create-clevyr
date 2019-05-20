@@ -6,6 +6,7 @@ const Router = require('koa-router');
 <% } else if (Backend === 'Hapi') { -%>
 const hapi = require('hapi');
 const config = require('./config');
+const corsConfig = require('./config/middleware/cors');
 <% } -%>
 
 <% if (Backend === 'Express') { -%>
