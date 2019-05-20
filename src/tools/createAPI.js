@@ -66,9 +66,6 @@ function calculateDependencies(settings) {
     if ('ORM' in settings && settings.ORM !== 'None') {
         dependencies.push(settings.ORM.toString().toLowerCase());
     }
-    if ('ORM' in settings && settings.ORM === 'Sequelize') {
-        dependencies.push('pg');
-    }
     if ('Backend' in settings && settings.Backend !== 'Hapi') {
         dependencies.push('chai-http');
         dependencies.push('cors');
@@ -82,6 +79,10 @@ function calculateDependencies(settings) {
         dependencies.push('ts-node');
         dependencies.push('typescript');
         dependencies.push('source-map-support');
+    }
+    if ('ORM' in settings && settings.ORM === 'Sequelize') {
+        dependencies.push('pg');
+        dependencies.push('sequelize-cli');
     }
 
     dependencies.push('nyc');
