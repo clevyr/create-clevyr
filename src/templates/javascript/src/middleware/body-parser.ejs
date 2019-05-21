@@ -1,0 +1,14 @@
+<% if (Backend === 'Express') { -%>
+const bodyParser = require('body-parser');
+<% } else if (Backend == 'Koa') { -%>
+const bodyParser = require('koa-bodyparser');
+<% } -%>
+
+<% if (Backend === 'Express') { -%>
+module.exports = (app) => {
+    app.use(bodyParser());
+<% } else if (Backend === 'Koa') { -%>
+module.exports = (app) => {
+    app.use(bodyParser());
+<% } -%>
+};

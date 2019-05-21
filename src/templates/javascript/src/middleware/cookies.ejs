@@ -1,0 +1,11 @@
+<% if (Backend === 'Express') { -%>
+const cookies = require('cookie-parser');
+<% } else if (Backend == 'Koa') { -%>
+const cookies = require('koa-cookie').default;
+<% } -%>
+
+<% if (Backend === 'Express' || Backend === 'Koa') { -%>
+module.exports = (app) => {
+    app.use(cookies());
+};
+<% } -%>

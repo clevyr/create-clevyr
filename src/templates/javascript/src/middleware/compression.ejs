@@ -1,0 +1,11 @@
+<% if (Backend === 'Express') { -%>
+const compress = require('compression');
+<% } else if (Backend == 'Koa') { -%>
+const compress = require('koa-compress');
+<% } -%>
+
+<% if (Backend === 'Express' || Backend === 'Koa') { -%>
+module.exports = (app) => {
+    app.use(compress());
+};
+<% } -%>

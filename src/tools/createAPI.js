@@ -70,6 +70,15 @@ function calculateDependencies(settings) {
         dependencies.push('chai-http');
         dependencies.push('cors');
     }
+    if ('Compression' in settings && settings['Compression'] && settings.Backend === 'Express') {
+        dependencies.push('compression');
+    }
+    if ('Compression' in settings && settings['Compression'] && settings.Backend === 'Koa') {
+        dependencies.push('koa-compress');
+    }
+    if ('CookieParser' in settings && settings['CookieParser'] && settings.Backend === 'Express') {
+        dependencies.push('cookie-parser');
+    }
     if ('TypeScript' in settings && settings.TypeScript) {
         dependencies.forEach((dep) => {
             dependencies.push(`@types/${dep}`);
@@ -79,6 +88,9 @@ function calculateDependencies(settings) {
         dependencies.push('ts-node');
         dependencies.push('typescript');
         dependencies.push('source-map-support');
+    }
+    if ('CookieParser' in settings && settings['CookieParser'] && settings.Backend === 'Koa') {
+        dependencies.push('koa-cookie');
     }
     if ('ORM' in settings && settings.ORM === 'Sequelize') {
         dependencies.push('pg');

@@ -24,7 +24,11 @@ const app = new hapi.Server({
 });
 <% } -%>
 
+<% if (Backend === 'Koa') { -%>
+require('./middleware')(router);
+<% } else { -%>
 require('./middleware')(app);
+<% } -%>
 
 <% if (Backend === 'Koa') { -%>
 require('./routes')(app, router);

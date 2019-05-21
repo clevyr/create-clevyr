@@ -24,25 +24,25 @@ const allSettings = [
         message: 'Use Compression middleware?',
         default: true,
         type: 'confirm',
+        when: (answers) => {
+            return answers.Backend !== 'Hapi';
+        },
     },
     {
         name: 'CookieParser',
-        message: 'Use cookie-parser middleware?',
+        message: 'Use cookie middleware?',
         default: true,
         type: 'confirm',
-    },
-    {
-        name: 'CSRF',
-        message: 'Use csurf middleware?',
-        default: true,
-        type: 'confirm',
+        when: (answers) => {
+            return answers.Backend !== 'Hapi';
+        },
     },
     {
         name: 'Logger',
         message: 'The logger to use?',
         default: 'Morgan',
         type: 'list',
-        choices: ['Morgan', 'None'],
+        choices: ['Morgan', 'Pino (Hapi Only)', 'None'],
     },
     {
         name: 'BodyParser',
@@ -50,7 +50,7 @@ const allSettings = [
         default: true,
         type: 'confirm',
         when: (answers) => {
-            return answers.Backend === 'Express';
+            return answers.Backend === 'Express' || answers.Backend === 'Koa';
         },
     },
     {
