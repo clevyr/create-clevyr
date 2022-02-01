@@ -29,7 +29,7 @@
   "dependencies": {
     "argparse": "^1.0.10",
     "cross-spawn": "^6.0.5",
-    "ejs": "^2.6.1",
+    "ejs": "^2.7.4",
     "esm": "^3.2.10",
     "fs-extra": "^7.0.1",
     "inquirer": "^6.2.2"
